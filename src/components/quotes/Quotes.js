@@ -15,7 +15,11 @@ const Quotes = ({
       <div className="quotes wrapper">
         <div className="category-header">
           <h2>Pick your favorite quotes below</h2>
-          <p>Browse through your collection of quotes</p>
+          <p>
+            You have a collection of {filteredQuotes.length} great{" "}
+            {category !== "All" && category}{" "}
+            {filteredQuotes.length === 1 ? "quote" : "quotes"}.
+          </p>
           <CategoryForm
             categories={categories}
             category={category}

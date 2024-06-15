@@ -27,6 +27,19 @@ function App() {
     "Empowerment",
   ];
 
+  // load favorites to local storage
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem("favoriteQuotes");
+    if (savedFavorites) {
+      setFavoriteQuotes(JSON.parse(savedFavorites));
+    }
+  }, []);
+
+  // Save favorite quotes to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("favoriteQuotes", JSON.stringify(favoriteQuotes));
+  }, [favoriteQuotes]);
+
   const fetchQuotes = async () => {
     try {
       setLoading(true);
@@ -82,7 +95,9 @@ function App() {
     const updatedFavorites = favoriteQuotes.filter(
       (quote) => quote.id !== quoteID
     );
+
     setFavoriteQuotes(updatedFavorites);
+    localStorage.setItem("favoriteQuotes", JSON.stringify(updatedFavorites));
   };
 
   return (
