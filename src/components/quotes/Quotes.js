@@ -6,6 +6,7 @@ const Quotes = ({
   filteredQuotes,
   categories,
   category,
+  favoriteQuotes,
   handleCategoryChange,
   addToFavorites,
 }) => {
@@ -13,7 +14,7 @@ const Quotes = ({
     <section className="all-quotes">
       <div className="quotes wrapper">
         <div className="category-header">
-          <h2 className="category-header">Pick your favorite quotes below</h2>
+          <h2>Pick your favorite quotes below</h2>
           <p>Browse through your collection of quotes</p>
           <CategoryForm
             categories={categories}
@@ -26,6 +27,7 @@ const Quotes = ({
             key={quote.id}
             quote={quote}
             addToFavorites={addToFavorites}
+            favoriteQuotes={favoriteQuotes}
           />
         ))}
       </div>

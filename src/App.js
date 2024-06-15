@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Loader } from "react-feather";
+import FavoriteQuotes from "./components/quotes/FavoriteQuotes";
 import Quotes from "./components/quotes/Quotes";
 import "./App.css";
 
@@ -9,7 +10,7 @@ function App() {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("All");
-  const [favoritequotes, setFavoriteQuotes] = useState([]);
+  const [favoriteQuotes, setFavoriteQuotes] = useState([]);
   const maxFaves = 3;
   const quotesUrl =
     "https://gist.githubusercontent.com/skillcrush-curriculum/6365d193df80174943f6664c7c6dbadf/raw/1f1e06df2f4fc3c2ef4c30a3a4010149f270c0e0/quotes.js";
@@ -22,6 +23,7 @@ function App() {
     "Success",
     "Empowerment",
   ];
+
   const fetchQuotes = async () => {
     try {
       setLoading(true);
@@ -50,14 +52,14 @@ function App() {
   const addToFavorites = (quoteID) => {
     const selectedQuote = quotes.find((quote) => quote.id === quoteID);
 
-    const alreadyFavorite = favoritequotes.find(
+    const alreadyFavorite = favoriteQuotes.find(
       (favorite) => favorite.id === selectedQuote.id
     );
 
     if (alreadyFavorite) {
       console.log("You already favorited this quote!");
-    } else if (favoritequotes.length < maxFaves) {
-      setFavoriteQuotes([...favoritequotes, selectedQuote]);
+    } else if (favoriteQuotes.length < maxFaves) {
+      setFavoriteQuotes([...favoriteQuotes, selectedQuote]);
       console.log("Added to Favorites!");
     } else {
       console.log(
@@ -66,16 +68,22 @@ function App() {
     }
   };
 
+  const removeFromFavorites = (quoteID) => {
+    const updatedFavorites = favoriteQuotes.filter(
+      (quote) => quote.id !== quoteID
+    );
+    setFavoriteQuotes(updatedFavorites);
+  };
+
   return (
     <div className="App">
       <Header />
       <main>
-        <section className="favorite-quotes">
-          <div className="wrapper quotes">
-            <h3>Top 3 favorite quotes</h3>
-            {favoritequotes.length > 0 && JSON.stringify(favoritequotes)}
-          </div>
-        </section>
+        <FavoriteQuotes
+          favoriteQuotes={favoriteQuotes}
+          maxFaves={maxFaves}
+          removeFromFavorites={removeFromFavorites}
+        />
         {loading ? (
           <Loader />
         ) : (
@@ -85,6 +93,7 @@ function App() {
             category={category}
             handleCategoryChange={handleCategoryChange}
             addToFavorites={addToFavorites}
+            favoriteQuotes={favoriteQuotes}
           />
         )}
       </main>
